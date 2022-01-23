@@ -1,22 +1,16 @@
 import { layoutItemsFromString } from 'tex-linebreak';
 import { Children } from 'react';
-import { Box, BoxProps, ThemeProvider } from '@mui/material';
+import { Box, BoxProps, ThemeProvider, Theme } from '@mui/material';
+import { SxProps } from '@mui/system';
 
 import primary from 'assets/font/sFont_primary.png';
 import secondary from 'assets/font/sFont_secondary.png';
+import success from 'assets/font/sFont_success.png';
+import successHover from 'assets/font/sFont_successHover.png';
+import disabled from 'assets/font/sFont_disabled.png';
 import dither from 'assets/dither.png';
 import useThemeSpacing from 'utils/useThemeSpacing';
 import theme from 'utils/theme';
-
-export const HoverOverride = (hover: Record<string, unknown> = {}) => ({
-	'--bitmap-url': `url(${secondary})`,
-	'--dither-url': `url(${dither})`,
-	':hover,:focus-visible': {
-		...hover,
-		'--bitmap-url': `url(${primary})`,
-		'--dither-url': `none`
-	}
-});
 
 const Kerning: Record<string, [number, number]> = {
 	' ': [3, 3],
@@ -45,10 +39,39 @@ const Kerning: Record<string, [number, number]> = {
 	'|': [1, 5]
 };
 
+export type BitmapVariant = 'primary' | 'secondary' | 'success' | 'disabled';
+
+const TextureVariant: Record<BitmapVariant, string> = {
+	primary,
+	secondary,
+	success,
+	disabled
+};
+
+const HoverVariant: Record<BitmapVariant, string> = {
+	primary,
+	secondary: primary,
+	success: successHover,
+	disabled
+};
+
+export const HoverOverride = (
+	variant: BitmapVariant,
+	hover: SxProps<Theme> = {}
+) => ({
+	'--bitmap-url': `url(${TextureVariant[variant]})`,
+	'--dither-url': `url(${dither})`,
+	':hover,:focus-visible': {
+		...hover,
+		'--bitmap-url': `url(${HoverVariant[variant]})`,
+		'--dither-url': `none`
+	}
+});
+
 type GlyphProps = {
 	char: string;
 	hasHover?: boolean;
-	variant: 'primary' | 'secondary';
+	variant: BitmapVariant;
 };
 
 const Glyph = ({ char, variant, hasHover }: GlyphProps) => {
@@ -62,9 +85,7 @@ const Glyph = ({ char, variant, hasHover }: GlyphProps) => {
 			sx={{
 				...(!hasHover
 					? {
-							'--bitmap-url': `url(${
-								variant === 'primary' ? primary : secondary
-							})`,
+							'--bitmap-url': `url(${TextureVariant[variant]})`,
 							'--dither-url': `url(${dither})`
 					  }
 					: {}),
@@ -88,7 +109,7 @@ const Glyph = ({ char, variant, hasHover }: GlyphProps) => {
 				lineHeight: t => t.spacing(11),
 				fontSize: t => t.spacing(16),
 				overflow: 'hidden',
-				...(variant === 'secondary'
+				...(variant !== 'primary'
 					? {
 							'::after': {
 								content: '""',
@@ -98,6 +119,7 @@ const Glyph = ({ char, variant, hasHover }: GlyphProps) => {
 								right: 0,
 								bottom: 0,
 								backgroundImage: `var(--dither-url)`,
+								backgroundSize: t => t.spacing(1),
 								maskImage: `var(--bitmap-url)`,
 								maskPosition: t =>
 									`${t.spacing(-((code % 95) * 13))} ${t.spacing(

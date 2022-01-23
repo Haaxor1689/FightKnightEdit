@@ -49,15 +49,15 @@ const FileLoadForm = ({ setWorldData }: Props) => (
 		/>
 		<BitmapText textAlign="center">
 			Start by locating your save files in{' '}
-			<BitmapText component="span" variant="secondary">
+			<BitmapText component="span" variant="success">
 				C:\Users\{'{{USER_NAME}}'}\AppData\Local\FIGHTKNIGHT\
 			</BitmapText>
 			. Then pick a slot from one of the{' '}
-			<BitmapText component="span" variant="secondary">
+			<BitmapText component="span" variant="success">
 				FIGHTKNIGHT_save_X
 			</BitmapText>{' '}
 			folders and select{' '}
-			<BitmapText component="span" variant="secondary">
+			<BitmapText component="span" variant="success">
 				save_gamestate.sav
 			</BitmapText>{' '}
 			file.

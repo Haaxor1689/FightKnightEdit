@@ -18,14 +18,16 @@ const Header = ({ name, reset }: Props) => (
 			alignItems: 'center',
 			alignSelf: 'stretch',
 			zIndex: 3,
-			gap: 3,
+			gap: 4,
 			p: 3
 		}}
 	>
 		<BitmapText flexGrow={1}>{name}</BitmapText>
 		<RawFormEdit />
 		<TextButton onClick={reset}>Discard</TextButton>
-		<TextButton type="submit">Save</TextButton>
+		<TextButton type="submit" variant="success">
+			Save
+		</TextButton>
 	</Paper>
 );
 

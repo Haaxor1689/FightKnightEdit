@@ -1,4 +1,5 @@
 import { keyframes } from '@emotion/react';
+import { Theme } from '@mui/material';
 import { isUndefined } from 'lodash-es';
 
 export const isNotUndefined = <T>(
@@ -42,23 +43,26 @@ export const parseHexArray = <T extends unknown>(
 		.map(k => arr.slice(k, k + length))
 		.map(parse);
 
-export const FocusAnimation = keyframes`
+export const FocusAnimationKeyframes = (t: Theme) => keyframes`
 	8% {
-		transform: translateX(5%);
+		transform: translateX(${t.spacing(2)});
 	}
 	25% {
-		transform: translateX(-5%);
+		transform: translateX(${t.spacing(-2)});
 	}
 	41% {
-		transform: translateX(3%);
+		transform: translateX(${t.spacing(1)});
 	}
 	58% {
-		transform: translateX(-3%);
+		transform: translateX(${t.spacing(-1)});
 	}
 	75% {
-		transform: translateX(2%);
+		transform: translateX(${t.spacing(0.5)});
 	}
 	91% {
-		transform: translateX(-2%);
+		transform: translateX(${t.spacing(-0.5)});
 	}
 `;
+
+export const FocusAnimation = (t: Theme) =>
+	`${FocusAnimationKeyframes(t)} 1s ease-in-out`;

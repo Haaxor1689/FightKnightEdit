@@ -91,6 +91,7 @@ const RawFormEdit = () => {
 					)}
 					<TextButton onClick={() => setOpen(false)}>Close</TextButton>
 					<TextButton
+						variant="success"
 						disabled={success}
 						onClick={() => {
 							try {
