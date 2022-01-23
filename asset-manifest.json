@@ -1,17 +1,17 @@
 {
   "files": {
     "main.css": "/FightKnightEdit/static/css/main.1251bdf1.chunk.css",
-    "main.js": "/FightKnightEdit/static/js/main.7977ec09.chunk.js",
-    "main.js.map": "/FightKnightEdit/static/js/main.7977ec09.chunk.js.map",
+    "main.js": "/FightKnightEdit/static/js/main.aea83648.chunk.js",
+    "main.js.map": "/FightKnightEdit/static/js/main.aea83648.chunk.js.map",
     "runtime-main.js": "/FightKnightEdit/static/js/runtime-main.01362511.js",
     "runtime-main.js.map": "/FightKnightEdit/static/js/runtime-main.01362511.js.map",
-    "static/js/2.1190b214.chunk.js": "/FightKnightEdit/static/js/2.1190b214.chunk.js",
-    "static/js/2.1190b214.chunk.js.map": "/FightKnightEdit/static/js/2.1190b214.chunk.js.map",
+    "static/js/2.a8a0b2aa.chunk.js": "/FightKnightEdit/static/js/2.a8a0b2aa.chunk.js",
+    "static/js/2.a8a0b2aa.chunk.js.map": "/FightKnightEdit/static/js/2.a8a0b2aa.chunk.js.map",
     "index.html": "/FightKnightEdit/index.html",
     "service-worker.js": "/FightKnightEdit/service-worker.js",
     "service-worker.js.map": "/FightKnightEdit/service-worker.js.map",
     "static/css/main.1251bdf1.chunk.css.map": "/FightKnightEdit/static/css/main.1251bdf1.chunk.css.map",
-    "static/js/2.1190b214.chunk.js.LICENSE.txt": "/FightKnightEdit/static/js/2.1190b214.chunk.js.LICENSE.txt",
+    "static/js/2.a8a0b2aa.chunk.js.LICENSE.txt": "/FightKnightEdit/static/js/2.a8a0b2aa.chunk.js.LICENSE.txt",
     "static/media/dither.f770c8f5.png": "/FightKnightEdit/static/media/dither.f770c8f5.png",
     "static/media/sArrow_0.414d5640.png": "/FightKnightEdit/static/media/sArrow_0.414d5640.png",
     "static/media/sFont_primary.1dbb1c01.png": "/FightKnightEdit/static/media/sFont_primary.1dbb1c01.png",
@@ -20,8 +20,8 @@
   },
   "entrypoints": [
     "static/js/runtime-main.01362511.js",
-    "static/js/2.1190b214.chunk.js",
+    "static/js/2.a8a0b2aa.chunk.js",
     "static/css/main.1251bdf1.chunk.css",
-    "static/js/main.7977ec09.chunk.js"
+    "static/js/main.aea83648.chunk.js"
   ]
 }
