@@ -1,3 +1,4 @@
+import { layoutItemsFromString } from 'tex-linebreak';
 import { Children } from 'react';
 import { Box, BoxProps, ThemeProvider } from '@mui/material';
 
@@ -57,6 +58,7 @@ const Glyph = ({ char, variant, hasHover }: GlyphProps) => {
 	if (code < 0 || code > 223) return null;
 	return (
 		<Box
+			component="span"
 			sx={{
 				...(!hasHover
 					? {
@@ -113,6 +115,20 @@ const Glyph = ({ char, variant, hasHover }: GlyphProps) => {
 	);
 };
 
+type WordProps = {
+	chars: string;
+} & Pick<GlyphProps, 'variant' | 'hasHover'> &
+	Pick<BoxProps, 'sx'>;
+
+const Word = ({ chars, sx, ...props }: WordProps) =>
+	chars.length <= 0 ? null : (
+		<Box component="span" sx={sx}>
+			{[...Array(chars.length).keys()].map(i => (
+				<Glyph key={i} char={chars[i]} {...props} />
+			))}
+		</Box>
+	);
+
 const sizes = ['sm', 'md', 'lg'] as const;
 type TextSizes = typeof sizes[number];
 
@@ -130,22 +146,32 @@ const BitmapText = ({
 }: Props) => {
 	const spacing = useThemeSpacing();
 	return (
-		<Box {...props}>
+		<Box {...props} sx={{ display: 'inline-block', ...props.sx }}>
 			<ThemeProvider
 				theme={theme(Math.max(spacing + sizes.indexOf(size) - 2, 1))}
 			>
-				{Children.map(Children.toArray(children), c =>
-					typeof c === 'string'
-						? [...Array(c.length).keys()].map(i => (
-								<Glyph
-									key={i}
-									char={c[i]}
-									variant={variant}
-									hasHover={hasHover}
-								/>
-						  ))
-						: c
-				)}
+				{Children.map(Children.toArray(children), c => {
+					if (typeof c !== 'string') return c;
+					const words = layoutItemsFromString(c, s => s.length);
+					return words.map((w, i) =>
+						w.type === 'box' ? (
+							<Word
+								key={i}
+								chars={w.text}
+								variant={variant}
+								hasHover={hasHover}
+								sx={{ display: 'inline-block' }}
+							/>
+						) : w.type === 'glue' ? (
+							<Word
+								key={i}
+								chars={w.text}
+								variant={variant}
+								hasHover={hasHover}
+							/>
+						) : null
+					);
+				})}
 			</ThemeProvider>
 		</Box>
 	);

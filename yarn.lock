@@ -10840,6 +10840,11 @@ test-exclude@^6.0.0:
     glob "^7.1.4"
     minimatch "^3.0.4"
 
+tex-linebreak@^0.6.0:
+  version "0.6.0"
+  resolved "https://registry.yarnpkg.com/tex-linebreak/-/tex-linebreak-0.6.0.tgz#41ebd4c5a7eb1ce48664fb9cb32dbc6c8095df69"
+  integrity sha512-jsZjB0q0UbV4zQsmMWmk909DPYrPS0fh/zImxzZy9pL02xBGfAOa4cEV7NyfTHhOsHem0+oXVIcHbvYfZKc5mQ==
+
 text-table@0.2.0, text-table@^0.2.0:
   version "0.2.0"
   resolved "https://registry.yarnpkg.com/text-table/-/text-table-0.2.0.tgz#7f5ee823ae805207c00af2df4a84ec3fcfa570b4"
