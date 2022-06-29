@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { useField as useFinalField } from 'react-final-form';
 
 type RecursiveKeyOf<TObj extends Record<string, unknown>> = {
