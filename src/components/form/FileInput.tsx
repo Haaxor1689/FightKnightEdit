@@ -3,8 +3,8 @@ import { FC } from 'react';
 import { useField } from 'react-final-form';
 import { useDropzone } from 'react-dropzone';
 
-import TextButton from 'components/TextButton';
-import BitmapText from 'components/BitmapText';
+import TextButton from 'components/layout/TextButton';
+import BitmapText from 'components/layout/BitmapText';
 
 type Props = {
 	id: string;

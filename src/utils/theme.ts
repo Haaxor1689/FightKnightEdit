@@ -12,13 +12,13 @@ const theme = (spacing: number) =>
 			background: { default: '#2c0b32' },
 			mode: 'dark'
 		},
-		typography: { fontFamily: '"Nintendo DS BIOS", sans-serif' },
 		spacing,
 		components: {
 			MuiCssBaseline: {
 				styleOverrides: {
 					'*': {
-						imageRendering: 'pixelated'
+						imageRendering: 'pixelated',
+						fontFamily: '"Nintendo DS BIOS", sans-serif'
 					},
 					'body': {
 						position: 'relative'
@@ -37,6 +37,13 @@ const theme = (spacing: number) =>
 						backgroundSize: 'cover',
 						filter: 'blur(10px)',
 						mixBlendMode: 'hard-light'
+					},
+					'#root': {
+						position: 'relative',
+						display: 'flex',
+						flexDirection: 'column',
+						minHeight: '100vh',
+						overflowX: 'hidden'
 					}
 				}
 			}

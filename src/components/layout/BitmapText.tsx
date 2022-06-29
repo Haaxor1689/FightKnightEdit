@@ -156,12 +156,14 @@ type TextSizes = typeof sizes[number];
 
 type Props = {
 	size?: TextSizes;
+	uppercase?: boolean;
 } & Partial<Pick<GlyphProps, 'variant' | 'hasHover'>> &
 	BoxProps;
 
 const BitmapText = ({
 	size = 'md',
 	variant = 'primary',
+	uppercase,
 	hasHover,
 	children,
 	...props
@@ -179,7 +181,7 @@ const BitmapText = ({
 						w.type === 'box' ? (
 							<Word
 								key={i}
-								chars={w.text}
+								chars={uppercase ? w.text.toUpperCase() : w.text}
 								variant={variant}
 								hasHover={hasHover}
 								sx={{ display: 'inline-block' }}
@@ -187,7 +189,7 @@ const BitmapText = ({
 						) : w.type === 'glue' ? (
 							<Word
 								key={i}
-								chars={w.text}
+								chars={uppercase ? w.text.toUpperCase() : w.text}
 								variant={variant}
 								hasHover={hasHover}
 							/>

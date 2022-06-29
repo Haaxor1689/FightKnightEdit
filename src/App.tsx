@@ -1,11 +1,12 @@
-import { Container, CssBaseline, Paper, ThemeProvider } from '@mui/material';
+import { CssBaseline, ThemeProvider } from '@mui/material';
 import { useEffect, useState } from 'react';
 
 import { SaveFile } from 'utils/types';
 import useThemeSpacing from 'utils/useThemeSpacing';
 import * as serviceWorker from 'serviceWorkerRegistration';
-import TextButton from 'components/TextButton';
-import BitmapText from 'components/BitmapText';
+import TextButton from 'components/layout/TextButton';
+import BitmapText from 'components/layout/BitmapText';
+import ActionBar from 'components/layout/ActionBar';
 
 import FileLoadForm from './FileLoadForm';
 import WorldEditForm from './WorldEditForm';
@@ -33,46 +34,23 @@ const App = () => {
 	return (
 		<ThemeProvider theme={theme(spacing)}>
 			<CssBaseline />
-			<Container
-				maxWidth="lg"
-				component="main"
-				sx={{
-					position: 'relative',
-					display: 'flex',
-					flexDirection: 'column',
-					minHeight: '100vh',
-					py: 0
-				}}
-			>
-				{!save ? (
-					<FileLoadForm setWorldData={setSave} />
-				) : (
-					<WorldEditForm save={save} reset={() => setSave(undefined)} />
-				)}
-				{waitingWorker && (
-					<Paper
-						sx={{
-							position: 'absolute',
-							bottom: 0,
-							display: 'flex',
-							alignItems: 'center',
-							width: '100%',
-							zIndex: 3,
-							gap: 3,
-							p: 3
-						}}
-					>
-						<BitmapText variant="secondary" sx={{ flexShrink: 0 }}>
-							!!!
-						</BitmapText>
-						<BitmapText size="sm" flexGrow={1}>
-							You are viewing outdated version of this app, please reload the
-							page.
-						</BitmapText>
-						<TextButton onClick={reloadPage}>Reload</TextButton>
-					</Paper>
-				)}
-			</Container>
+			{!save ? (
+				<FileLoadForm setWorldData={setSave} />
+			) : (
+				<WorldEditForm save={save} reset={() => setSave(undefined)} />
+			)}
+			{waitingWorker && (
+				<ActionBar sx={{ position: 'absolute', bottom: 0, width: '100vw' }}>
+					<BitmapText variant="secondary" sx={{ flexShrink: 0 }}>
+						!!!
+					</BitmapText>
+					<BitmapText size="sm" flexGrow={1}>
+						You are viewing outdated version of this app, please reload the
+						page.
+					</BitmapText>
+					<TextButton onClick={reloadPage}>Reload</TextButton>
+				</ActionBar>
+			)}
 		</ThemeProvider>
 	);
 };

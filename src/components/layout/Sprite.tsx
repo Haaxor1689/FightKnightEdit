@@ -37,14 +37,15 @@ const Sprite = ({ img, width, height, size = 1, sx, ...props }: Props) => {
 			component="img"
 			src={img}
 			{...props}
-			style={
-				loaded
+			style={{
+				...(props.style ?? {}),
+				...(loaded
 					? {
 							width: w ? w * spacing * size : undefined,
 							height: h ? h * spacing * size : undefined
 					  }
-					: undefined
-			}
+					: undefined)
+			}}
 			onLoad={onLoad}
 			sx={{
 				...sx,

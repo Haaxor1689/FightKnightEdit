@@ -16,11 +16,19 @@ const MatrixValueSchema = z
 	.regex(/^([0-9A-F]{24})+$/)
 	.transform(v => {
 		const [meta, ...arr] = parseHexArray(v, 24, v => v);
+		const width = parseHexValue(meta.slice(4, 10));
+		const height = parseHexValue(meta.slice(12, 18));
 		return {
-			width: parseHexValue(meta.slice(4, 10)),
-			height: parseHexValue(meta.slice(12, 18)),
-			data: arr.reduce<{ [key: number]: string }>(
-				(obj, t, i) => (parseHexValue(t) ? { ...obj, [i]: t } : obj),
+			width,
+			height,
+			data: arr.reduce<{ [x: number]: { [y: number]: string } }>(
+				(obj, t, i) => {
+					const x = Math.floor(i / width);
+					const y = i % width;
+					return parseHexValue(t)
+						? { ...obj, [x]: { ...obj[x], [y]: t } }
+						: obj;
+				},
 				{}
 			)
 		};
@@ -29,18 +37,18 @@ const RawMatrixValueSchema = z
 	.object({
 		width: z.number(),
 		height: z.number(),
-		data: z.record(z.string())
+		data: z.record(z.record(z.string()))
 	})
 	.transform(v =>
 		[
 			`5B02${parseToHex(v.width, 6)}00${parseToHex(v.height, 6)}000000`,
 			...[...Array(v.width * v.height).keys()].map(
-				i => v.data[i] ?? parseToHex(0, 24)
+				i => v.data[Math.floor(i / v.width)]?.[i % v.width] ?? parseToHex(0, 24)
 			)
 		].join('')
 	);
 
-type Matrix = z.infer<typeof MatrixValueSchema>;
+export type Matrix = z.infer<typeof MatrixValueSchema>;
 
 // Number
 const NumberSchema = z.object({ 0: NumberValueSchema }).transform(v => v[0]);
@@ -64,27 +72,13 @@ const RawNumberArraySchema = (length = 99, base = z.number()) =>
 		.array(RawNumberValueSchema(base))
 		.transform(v =>
 			[...Array(length).keys()].reduce<{ [key: number]: string }>(
-				(obj, i) => ({ ...obj, [i]: v[i] ?? Number(1).toFixed(6) }),
+				(obj, i) => ({ ...obj, [i]: v[i] ?? Number(0).toFixed(6) }),
 				{}
 			)
 		);
 
-const MatrixArraySchema = z
-	.record(MatrixValueSchema)
-	.transform(v =>
-		Object.values(v ?? {}).reduceRight<Matrix[]>(
-			(arr, v) => (arr.length === 0 && !v ? [] : [v, ...arr]),
-			[]
-		)
-	);
-const RawMatrixArraySchema = z
-	.array(RawMatrixValueSchema)
-	.transform(v =>
-		[...Array(v.length).keys()].reduce<{ [key: number]: string }>(
-			(obj, i) => ({ ...obj, [i]: v[i] ?? Number(0).toFixed(6) }),
-			{}
-		)
-	);
+const MatrixArraySchema = z.record(MatrixValueSchema);
+const RawMatrixArraySchema = z.record(RawMatrixValueSchema);
 
 export const SaveFileSchema = z
 	.object({
@@ -97,7 +91,7 @@ export const SaveFileSchema = z
 		inv_quest: NumberArraySchema,
 		lvlslot_auto: MatrixSchema.optional(),
 		mapdun: MatrixArraySchema,
-		mapwalked: MatrixSchema,
+		mapwalked: MatrixArraySchema,
 		npc_partsgiven: MatrixSchema.optional(),
 		npc_triggers: MatrixSchema.optional(),
 		save: z.object({
@@ -117,7 +111,7 @@ export const SaveFileSchema = z
 		special_inv: NumberArraySchema,
 		specialatk_slot_count: NumberSchema,
 		specialcharge_slot_count: NumberSchema,
-		triggers: MatrixSchema
+		triggers: MatrixSchema.optional()
 	})
 	.strict();
 
@@ -134,7 +128,7 @@ export const RawSaveFileSchema = z
 		inv_quest: RawNumberArraySchema(),
 		lvlslot_auto: RawMatrixSchema.optional(),
 		mapdun: RawMatrixArraySchema,
-		mapwalked: RawMatrixSchema,
+		mapwalked: RawMatrixArraySchema,
 		npc_partsgiven: RawMatrixSchema.optional(),
 		npc_triggers: RawMatrixSchema.optional(),
 		save: z.object({
@@ -154,6 +148,6 @@ export const RawSaveFileSchema = z
 		special_inv: RawNumberArraySchema(7),
 		specialatk_slot_count: RawNumberSchema(),
 		specialcharge_slot_count: RawNumberSchema(),
-		triggers: RawMatrixSchema
+		triggers: RawMatrixSchema.optional()
 	})
 	.strict();
