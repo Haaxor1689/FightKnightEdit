@@ -18,8 +18,6 @@
 			"sizes": "512x512"
 		}
 	],
-	"start_url": "/FightKnightEdit/",
-	"scope": "/FightKnightEdit/",
 	"display": "fullscreen",
 	"background_color": "#2c0b32",
 	"theme_color": "#2c0b32"
